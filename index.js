@@ -25,11 +25,13 @@ var logLevelTransformer = through.obj(function (chunk, enc, cb) {
   if (chunk.level) {
     chunk = Object.assign({},chunk,{
       level: levels[chunk.level] || chunk.level,
-      message: chunk.msg,
+      // Report full stack trace if available
+      message: chunk.stack || chunk.msg,
       timestamp: new Date(chunk.time)
     })
 
     delete chunk['msg']
+    delete chunk['stack']
     delete chunk['time']
   }
 
